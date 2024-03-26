@@ -161,7 +161,7 @@ const estilos = StyleSheet.create({
     marginBottom: 25,
   },
   map: {
-    width: 350,
+    width: 340,
     height: 250,
     borderRadius: 8,
   },
