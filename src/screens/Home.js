@@ -63,6 +63,7 @@ export default function Home() {
       />
       {nome && <Text style={estilos.text}>Local: {nome}</Text>}
       <Button onPress={acessarCamera} title="Tirar uma nova foto"></Button>
+
       {foto ? (
         <Image source={{ uri: foto }} style={{ width: 300, height: 300 }} />
       ) : (
