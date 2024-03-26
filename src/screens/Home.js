@@ -45,6 +45,9 @@ export default function Home() {
 
   // MAPA
 
+  const [minhaLocalizacao, setminhaLocalizacao] = useState(null);
+  const [localizacao, setLocalizacao] = useState(null);
+
   const regiaoInicialMapa = {
     latitude: -23.5489,
     longitude: -46.6388,
@@ -53,24 +56,19 @@ export default function Home() {
     longitudeDelta: 0.8,
   };
 
-  // Localização em state a ser definida com interação com o mapa
-  const [localizacao, setLocalizacao] = useState({
-    latitude: -33.867886,
-    longitude: -63.987,
-    latitudeDelta: 0.8,
-    longitudeDelta: 0.8,
-  });
   // Ação de marcar o local/tocar em um ponto do mapa e dar valor a localização através do state
-  const marcarLocal = (event) => {
+  const marcarLocal = () => {
     // console.log(event.nativeEvent);
     setLocalizacao({
-      ...localizacao,
-      latitude: event.nativeEvent.coordinate.latitude,
-      longitude: event.nativeEvent.coordinate.longitude,
+      // novos valores da geolocalizacao da posição do usuario
+      // Aqui é necessário aacessar a propriedade 'coords' do state minhaLocalizacao. Os
+      //  valores desta propriedade correspondem ao que o Location conseguiu obter à partir do GPS do aparelho
+      latitude: minhaLocalizacao.coords.latitude,
+      longitude: minhaLocalizacao.coords.longitude,
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.01,
     });
   };
-
-  const [minhaLocalizacao, setminhaLocalizacao] = useState(null);
 
   // obter permissão da minha localização
   useEffect(() => {
@@ -120,8 +118,12 @@ export default function Home() {
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
         </Pressable>
 
-        <View initialRegion={regiaoInicialMapa}>
-          <MapView style={estilos.map} mapType="mutedStandard">
+        <View>
+          <MapView
+            style={estilos.map}
+            mapType="mutedStandard"
+            region={localizacao ?? regiaoInicialMapa}
+          >
             <Marker coordinate={localizacao} />
           </MapView>
         </View>
