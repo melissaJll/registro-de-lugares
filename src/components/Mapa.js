@@ -19,7 +19,6 @@ export default function Mapa() {
   const marcarLocal = () => {
     // console.log(event.nativeEvent);
     setLocalizacao({
-      // Aqui é necessário aacessar a propriedade 'coords' do state minhaLocalizacao.
       latitude: minhaLocalizacao.coords.latitude,
       longitude: minhaLocalizacao.coords.longitude,
       latitudeDelta: 0.02,

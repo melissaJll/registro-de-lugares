@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { TextInput, View, Text, StyleSheet, SafeAreaView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { TextInput, View, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
+import SafeContainer from "../components/SafeContainer";
 import TirarFoto from "../components/TirarFoto";
 import Mapa from "../components/Mapa";
 
@@ -12,26 +12,21 @@ export default function Home() {
   // MAPA
 
   return (
-    <LinearGradient
-      colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
-      style={estilos.container}
-    >
-      <SafeAreaView style={estilos.container}>
-        <View style={estilos.containerInput}>
-          <TextInput
-            style={estilos.input}
-            placeholder="Digite a Legenda do local"
-            onChangeText={(textDigitado) => setNome(textDigitado)}
-          />
-          {/* <Ionicons name="enter-outline" size={40} color="#056a80" /> */}
-          <AntDesign name="enter" size={33} color="#056a80" />
-        </View>
-        {nome && <Text style={estilos.text}>Local: {nome}</Text>}
+    <SafeContainer>
+      <View style={estilos.containerInput}>
+        <TextInput
+          style={estilos.input}
+          placeholder="Digite a Legenda do local"
+          onChangeText={(textDigitado) => setNome(textDigitado)}
+        />
+        {/* <Ionicons name="enter-outline" size={40} color="#056a80" /> */}
+        <AntDesign name="enter" size={33} color="#056a80" />
+      </View>
+      {nome && <Text style={estilos.text}>Local: {nome}</Text>}
 
-        <TirarFoto />
-        <Mapa />
-      </SafeAreaView>
-    </LinearGradient>
+      <TirarFoto />
+      <Mapa />
+    </SafeContainer>
   );
 }
 
