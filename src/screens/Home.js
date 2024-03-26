@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
+  Pressable,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
@@ -42,7 +43,7 @@ export default function Home() {
 
   return (
     <LinearGradient
-      colors={["#F0FFFF", "#fffff2", "#def6fc"]}
+      colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
       style={estilos.container}
     >
       <SafeAreaView style={estilos.container}>
@@ -52,12 +53,24 @@ export default function Home() {
           onChangeText={(textDigitado) => setNome(textDigitado)}
         />
         {nome && <Text style={estilos.text}>Local: {nome}</Text>}
-        <Button onPress={acessarCamera} title="Tirar uma nova foto" />
+
         {foto ? (
-          <Image source={{ uri: foto }} style={{ width: 300, height: 300 }} />
+          <Image
+            source={{ uri: foto }}
+            style={{ width: 300, height: 300, borderRadius: 10 }}
+          />
         ) : (
-          <Text>Tire uma foto</Text>
+          <Image
+            source="https://via.placeholder.com/1024x768/eee?text=4:3"
+            contentFit="cover"
+            width={300}
+            height={300}
+          />
         )}
+        {/* <Button onPress={acessarCamera} title="Tirar uma nova foto" /> */}
+        <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
+          <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
+        </Pressable>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -69,14 +82,29 @@ const estilos = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    height: 40,
+    height: 45,
     width: 300,
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
-    marginBottom: 20,
+    marginVertical: 20,
+    borderColor: "#0c8ca8",
+    borderWidth: 2,
   },
   text: {
     fontSize: 20,
+  },
+  botaoText: {
+    color: "#09768f",
+    fontWeight: "600",
+    fontSize: 18,
+  },
+  botaoFoto: {
+    borderWidth: 1,
+    borderRadius: 24,
+    borderColor: "#0c8ca8",
+    padding: 15,
+    backgroundColor: "#fafcfc",
+    borderStyle: "solid",
   },
 });
