@@ -60,9 +60,7 @@ export default function Home() {
   const marcarLocal = () => {
     // console.log(event.nativeEvent);
     setLocalizacao({
-      // novos valores da geolocalizacao da posição do usuario
-      // Aqui é necessário aacessar a propriedade 'coords' do state minhaLocalizacao. Os
-      //  valores desta propriedade correspondem ao que o Location conseguiu obter à partir do GPS do aparelho
+      // Aqui é necessário aacessar a propriedade 'coords' do state minhaLocalizacao.
       latitude: minhaLocalizacao.coords.latitude,
       longitude: minhaLocalizacao.coords.longitude,
       latitudeDelta: 0.02,
@@ -83,6 +81,7 @@ export default function Home() {
     }
     obterLocalizacao();
   }, []);
+  console.log(minhaLocalizacao); //Esperar carregar no console para testar
 
   return (
     <LinearGradient
@@ -113,7 +112,6 @@ export default function Home() {
           //   />
           // )
         }
-        {/* <Button onPress={acessarCamera} title="Tirar uma nova foto" /> */}
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
         </Pressable>
@@ -124,7 +122,13 @@ export default function Home() {
             mapType="mutedStandard"
             region={localizacao ?? regiaoInicialMapa}
           >
-            <Marker coordinate={localizacao} />
+            <Marker coordinate={localizacao}>
+              <Image
+                source={require("../../assets/marker.png")}
+                height={4}
+                width={3}
+              />
+            </Marker>
           </MapView>
         </View>
 
@@ -153,6 +157,9 @@ const estilos = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    color: "#056a80",
+    marginVertical: 5,
+    fontWeight: "bold",
   },
   botaoText: {
     color: "#09768f",
