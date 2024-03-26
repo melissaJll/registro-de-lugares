@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   TextInput,
   View,
   Text,
   StyleSheet,
   SafeAreaView,
   Image,
-  ImageBackground,
+  Alert,
+  Button,
   Pressable,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 
 export default function Home() {
   const [nome, setNome] = useState("");
@@ -69,6 +70,22 @@ export default function Home() {
     });
   };
 
+  const [minhaLocalizacao, setminhaLocalizacao] = useState(null);
+
+  // obter permissão da minha localização
+  useEffect(() => {
+    async function obterLocalizacao() {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Ops", "Você não autorizou o uso da geolocalizacao");
+        return;
+      }
+      let localizacaoAtual = await Location.getCurrentPositionAsync({});
+      setminhaLocalizacao(localizacaoAtual);
+    }
+    obterLocalizacao();
+  }, []);
+
   return (
     <LinearGradient
       colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
@@ -104,16 +121,12 @@ export default function Home() {
         </Pressable>
 
         <View initialRegion={regiaoInicialMapa}>
-          <MapView
-            onPress={marcarLocal}
-            style={estilos.map}
-            mapType="mutedStandard"
-          >
+          <MapView style={estilos.map} mapType="mutedStandard">
             <Marker coordinate={localizacao} />
           </MapView>
         </View>
 
-        <Pressable style={estilos.botaoFoto}>
+        <Pressable onPress={marcarLocal} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Localizar no Mapa</Text>
         </Pressable>
       </SafeAreaView>
