@@ -43,18 +43,30 @@ export default function Home() {
   };
 
   // MAPA
+
   const regiaoInicialMapa = {
-    latitude: -10,
-    longitude: -55,
-    latitudeDelta: 0.3,
-    longitudeDelta: 0.3,
+    latitude: -23.5489,
+    longitude: -46.6388,
+
+    latitudeDelta: 0.8,
+    longitudeDelta: 0.8,
   };
 
-  const localizacao = {
+  // Localização em state a ser definida com interação com o mapa
+  const [localizacao, setLocalizacao] = useState({
     latitude: -33.867886,
     longitude: -63.987,
     latitudeDelta: 0.8,
     longitudeDelta: 0.8,
+  });
+  // Ação de marcar o local/tocar em um ponto do mapa e dar valor a localização através do state
+  const marcarLocal = (event) => {
+    // console.log(event.nativeEvent);
+    setLocalizacao({
+      ...localizacao,
+      latitude: event.nativeEvent.coordinate.latitude,
+      longitude: event.nativeEvent.coordinate.longitude,
+    });
   };
 
   return (
@@ -92,7 +104,11 @@ export default function Home() {
         </Pressable>
 
         <View initialRegion={regiaoInicialMapa}>
-          <MapView style={estilos.map}>
+          <MapView
+            onPress={marcarLocal}
+            style={estilos.map}
+            mapType="mutedStandard"
+          >
             <Marker coordinate={localizacao} />
           </MapView>
         </View>
