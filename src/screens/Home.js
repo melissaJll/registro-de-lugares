@@ -16,8 +16,11 @@ import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 
+import TirarFoto from "../components/TirarFoto";
+
 export default function Home() {
   const [nome, setNome] = useState("");
+
   const [foto, setFoto] = useState(null);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
@@ -96,25 +99,7 @@ export default function Home() {
         />
         {nome && <Text style={estilos.text}>Local: {nome}</Text>}
 
-        {
-          foto && (
-            <Image
-              source={{ uri: foto }}
-              style={{ width: 300, height: 250, borderRadius: 8 }}
-            />
-          )
-          //  : (
-          //   <Image
-          //     // source="https://via.placeholder.com/1024x768/eee?text=4:3"
-          //     contentFit="cover"
-          //     width={290}
-          //     height={250}
-          //   />
-          // )
-        }
-        <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
-          <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
-        </Pressable>
+        <TirarFoto></TirarFoto>
 
         <View>
           <MapView
@@ -176,7 +161,7 @@ const estilos = StyleSheet.create({
     marginBottom: 25,
   },
   map: {
-    width: 300,
+    width: 350,
     height: 250,
     borderRadius: 8,
   },
