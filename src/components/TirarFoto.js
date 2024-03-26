@@ -37,7 +37,7 @@ export default function TirarFoto() {
   };
 
   return (
-    <SafeAreaView style={estilos.container}>
+    <View style={estilos.container}>
       {
         foto && (
           <Image
@@ -57,7 +57,7 @@ export default function TirarFoto() {
       <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
         <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
       </Pressable>
-    </SafeAreaView>
+    </View>
   );
 }
 
