@@ -1,19 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  TextInput,
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  Alert,
-  Pressable,
-} from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import React, { useState } from "react";
+import { TextInput, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker";
-import * as MediaLibrary from "expo-media-library";
-import * as Location from "expo-location";
 import { AntDesign } from "@expo/vector-icons";
 
 import TirarFoto from "../components/TirarFoto";

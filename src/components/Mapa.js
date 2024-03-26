@@ -59,8 +59,8 @@ export default function Mapa() {
         <Marker coordinate={localizacao}>
           <Image
             source={require("../../assets/marker.png")}
-            height={4}
-            width={3}
+            height={3}
+            width={2}
           />
         </Marker>
       </MapView>
