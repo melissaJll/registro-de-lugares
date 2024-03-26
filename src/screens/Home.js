@@ -1,20 +1,46 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  StatusBar,
+  TextInput,
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function App() {
+export default function Home() {
+  const [nome, setNome] = useState("");
+
   return (
-    <View style={styles.container}>
-      <Text>Open home!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={estilos.container}>
+      <TextInput
+        style={estilos.input}
+        placeholder="Digite a Legenda do local"
+        onChangeText={(textDigitado) => setNome(textDigitado)}
+        // value={nome}
+      />
+      {nome && <Text style={estilos.text}>Local: {nome}</Text>}
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const estilos = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // justifyContent: "center",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  input: {
+    height: 40,
+    width: 300,
+    borderColor: "gray",
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 20,
   },
 });
