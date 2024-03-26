@@ -57,19 +57,30 @@ export default function Home() {
         {foto ? (
           <Image
             source={{ uri: foto }}
-            style={{ width: 300, height: 300, borderRadius: 10 }}
+            style={{ width: 250, height: 250, borderRadius: 10 }}
           />
         ) : (
           <Image
             source="https://via.placeholder.com/1024x768/eee?text=4:3"
             contentFit="cover"
-            width={300}
-            height={300}
+            width={250}
+            height={250}
           />
         )}
         {/* <Button onPress={acessarCamera} title="Tirar uma nova foto" /> */}
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
+        </Pressable>
+
+        <Image
+          source="https://via.placeholder.com/1024x768/eee?text=4:3"
+          contentFit="cover"
+          width={250}
+          height={250}
+        />
+
+        <Pressable style={estilos.botaoFoto}>
+          <Text style={estilos.botaoText}>Localizar no Mapa</Text>
         </Pressable>
       </SafeAreaView>
     </LinearGradient>
@@ -101,10 +112,9 @@ const estilos = StyleSheet.create({
   },
   botaoFoto: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 14,
     borderColor: "#0c8ca8",
     padding: 15,
-    backgroundColor: "#fafcfc",
     borderStyle: "solid",
   },
 });
