@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const Stack = createNativeStackNavigator();
 
 import Home from "./src/screens/Home";
+import Galeria from "./src/screens/Galeria";
 
 export default function App() {
   return (
@@ -15,7 +16,7 @@ export default function App() {
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
-            headerStyle: { backgroundColor: "#5451a6" },
+            headerStyle: { backgroundColor: "#0c8ca8" },
             headerTintColor: "white",
           }}
         >
@@ -26,6 +27,7 @@ export default function App() {
             options={{ headerShown: false }}
             // Desabilita o nome na home
           />
+          <Stack.Screen name="Galeria" component={Galeria} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
