@@ -2,10 +2,12 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function TirarFoto() {
   const [foto, setFoto] = useState(null);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function verificaPermissoes() {
@@ -47,9 +49,19 @@ export default function TirarFoto() {
         //   />
         // )
       }
-      <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
-        <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
-      </Pressable>
+      <View style={estilos.viewBotoes}>
+        <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
+          <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
+        </Pressable>
+        {foto && (
+          <Pressable
+            style={estilos.botaoFoto}
+            onPress={() => navigation.navigate("Galeria")}
+          >
+            <Text style={estilos.botaoText}>Ver fotos</Text>
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
@@ -73,5 +85,9 @@ const estilos = StyleSheet.create({
     borderStyle: "solid",
     marginTop: 15,
     marginBottom: 20,
+    marginHorizontal: 5,
+  },
+  viewBotoes: {
+    flexDirection: "row",
   },
 });
