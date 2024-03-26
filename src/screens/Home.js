@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Pressable,
 } from "react-native";
+import MapView from "react-native-maps";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
@@ -41,6 +42,14 @@ export default function Home() {
     }
   };
 
+  // MAPA
+  const regiaoInicialMapa = {
+    latitude: -10,
+    longitude: -55,
+    latitudeDelta: 0.3,
+    longitudeDelta: 0.3,
+  };
+
   return (
     <LinearGradient
       colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
@@ -54,30 +63,30 @@ export default function Home() {
         />
         {nome && <Text style={estilos.text}>Local: {nome}</Text>}
 
-        {foto ? (
-          <Image
-            source={{ uri: foto }}
-            style={{ width: 250, height: 250, borderRadius: 10 }}
-          />
-        ) : (
-          <Image
-            source="https://via.placeholder.com/1024x768/eee?text=4:3"
-            contentFit="cover"
-            width={250}
-            height={250}
-          />
-        )}
+        {
+          foto && (
+            <Image
+              source={{ uri: foto }}
+              style={{ width: 300, height: 250, borderRadius: 8 }}
+            />
+          )
+          //  : (
+          //   <Image
+          //     // source="https://via.placeholder.com/1024x768/eee?text=4:3"
+          //     contentFit="cover"
+          //     width={290}
+          //     height={250}
+          //   />
+          // )
+        }
         {/* <Button onPress={acessarCamera} title="Tirar uma nova foto" /> */}
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
         </Pressable>
 
-        <Image
-          source="https://via.placeholder.com/1024x768/eee?text=4:3"
-          contentFit="cover"
-          width={250}
-          height={250}
-        />
+        <View initialRegion={regiaoInicialMapa}>
+          <MapView style={estilos.map} />
+        </View>
 
         <Pressable style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Localizar no Mapa</Text>
@@ -116,5 +125,12 @@ const estilos = StyleSheet.create({
     borderColor: "#0c8ca8",
     padding: 15,
     borderStyle: "solid",
+    marginTop: 15,
+    marginBottom: 25,
+  },
+  map: {
+    width: 300,
+    height: 250,
+    borderRadius: 8,
   },
 });
