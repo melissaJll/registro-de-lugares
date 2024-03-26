@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Pressable,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
