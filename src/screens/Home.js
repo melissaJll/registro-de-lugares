@@ -10,7 +10,7 @@ import {
   ImageBackground,
   Pressable,
 } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
@@ -50,6 +50,13 @@ export default function Home() {
     longitudeDelta: 0.3,
   };
 
+  const localizacao = {
+    latitude: -33.867886,
+    longitude: -63.987,
+    latitudeDelta: 0.8,
+    longitudeDelta: 0.8,
+  };
+
   return (
     <LinearGradient
       colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
@@ -85,7 +92,9 @@ export default function Home() {
         </Pressable>
 
         <View initialRegion={regiaoInicialMapa}>
-          <MapView style={estilos.map} />
+          <MapView style={estilos.map}>
+            <Marker coordinate={localizacao} />
+          </MapView>
         </View>
 
         <Pressable style={estilos.botaoFoto}>
