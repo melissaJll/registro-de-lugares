@@ -6,7 +6,7 @@ import * as SplashScreen from "expo-splash-screen";
 
 // import * as SplashScreen from "expo-splash-screen";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 export default function SafeContainer({ children }) {
   return (
