@@ -4,6 +4,9 @@ import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
+import { storage } from "../../firebase.config"; // Assuming you have `storage` imported here
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 export default function TirarFoto() {
   const [foto, setFoto] = useState(null);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
@@ -28,27 +31,49 @@ export default function TirarFoto() {
     if (!imagem.canceled) {
       await MediaLibrary.saveToLibraryAsync(imagem.assets[0].uri);
       setFoto(imagem.assets[0].uri);
+
+      // Upload the image to Firebase Storage
+      carregarStorage(imagem.assets[0].uri);
+    }
+  };
+
+  const carregarStorage = async (imageUrl) => {
+    try {
+      const imageName = imageUrl.split("/").pop(); // Extract the filename
+      const imageRef = ref(storage, `images/${imageName}`);
+
+      const uploadTask = uploadBytesResumable(imageRef, {
+        uri: imageUrl,
+        type: "image/jpeg",
+      });
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Progress handling (as shown in previous response)
+        },
+        (error) => {
+          console.error("Upload failed:", error);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log("Image uploaded successfully:", downloadURL);
+          // You can use the downloadURL for display or save to database
+        }
+      );
+    } catch (error) {
+      console.error("Error during upload:", error);
     }
   };
 
   return (
     <View style={estilos.container}>
-      {
-        foto && (
-          <Image
-            source={{ uri: foto }}
-            style={{ width: 340, height: 250, borderRadius: 8 }}
-          />
-        )
-        //  : (
-        //   <Image
-        //     // source="https://via.placeholder.com/1024x768/eee?text=4:3"
-        //     contentFit="cover"
-        //     width={290}
-        //     height={250}
-        //   />
-        // )
-      }
+      {foto && (
+        <Image
+          source={{ uri: foto }}
+          style={{ width: 340, height: 250, borderRadius: 8 }}
+        />
+      )}
       <View style={estilos.viewBotoes}>
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
@@ -61,6 +86,12 @@ export default function TirarFoto() {
             <Text style={estilos.botaoText}>Ver fotos</Text>
           </Pressable>
         )}
+        <Pressable
+          style={estilos.botaoFoto}
+          onPress={() => carregarStorage(foto)}
+        >
+          <Text>Salvar no Storage</Text>
+        </Pressable>
       </View>
     </View>
   );
