@@ -14,9 +14,7 @@ export default function SafeContainer({ children }) {
       colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
       style={estilos.container}
     >
-      <SafeAreaView onLayout={aoAtualizarLayout} style={estilos.container}>
-        {children}
-      </SafeAreaView>
+      <SafeAreaView style={estilos.container}>{children}</SafeAreaView>
     </LinearGradient>
   );
 }
