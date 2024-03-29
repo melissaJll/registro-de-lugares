@@ -1,0 +1,22 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDIdMaV8W6ZEKWf0b5Z4urYesK9AezCAeE",
+  authDomain: "registro-de-lugares-f1311.firebaseapp.com",
+  projectId: "registro-de-lugares-f1311",
+  storageBucket: "registro-de-lugares-f1311.appspot.com",
+  messagingSenderId: "740899660812",
+  appId: "1:740899660812:web:7e52178b9d2cade59d7a29",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+
+export { storage };
+
