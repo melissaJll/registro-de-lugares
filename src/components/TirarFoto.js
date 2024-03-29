@@ -32,7 +32,6 @@ export default function TirarFoto() {
       setFoto(resultado.assets[0].uri);
     }
   };
-  console.log(foto);
 
   const acessarCamera = async () => {
     const imagem = await ImagePicker.launchCameraAsync({
@@ -84,11 +83,7 @@ export default function TirarFoto() {
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
         </Pressable>
-        <Pressable style={estilos.botaoFoto}>
-          <Text style={estilos.botaoText} onPress={escolherFoto}>
-            Carregar imagem
-          </Text>
-        </Pressable>
+
         <Pressable style={estilos.botaoFoto}>
           <Text style={estilos.botaoText} onPress={uploadStorage}>
             Storage
