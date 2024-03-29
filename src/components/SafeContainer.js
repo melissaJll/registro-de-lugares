@@ -2,10 +2,11 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import * as SplashScreen from "expo-splash-screen";
 
 // import * as SplashScreen from "expo-splash-screen";
 
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function SafeContainer({ children }) {
   return (
@@ -13,7 +14,9 @@ export default function SafeContainer({ children }) {
       colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
       style={estilos.container}
     >
-      <SafeAreaView style={estilos.container}>{children}</SafeAreaView>
+      <SafeAreaView onLayout={aoAtualizarLayout} style={estilos.container}>
+        {children}
+      </SafeAreaView>
     </LinearGradient>
   );
 }

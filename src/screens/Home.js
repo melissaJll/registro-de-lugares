@@ -22,7 +22,7 @@ export default function Home() {
         {/* <Ionicons name="enter-outline" size={40} color="#056a80" /> */}
         <AntDesign name="enter" size={33} color="#056a80" />
       </View>
-      {nome && <Text style={estilos.text}>Local: {nome}</Text>}
+      {nome && <Text style={estilos.legenda}>Local: {nome}</Text>}
 
       <TirarFoto />
       <Mapa />
@@ -45,7 +45,7 @@ const estilos = StyleSheet.create({
     borderColor: "#0c8ca8",
     borderWidth: 2,
   },
-  text: {
+  legenda: {
     fontSize: 20,
     color: "#056a80",
     marginVertical: 5,
