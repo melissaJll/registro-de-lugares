@@ -1,15 +1,15 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
-import { storage } from "../../firebase.config"; // Assuming you have `storage` imported here
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import * as FileSystem from "expo-file-system";
+import { firebase } from "../../firebase.config";
 
 export default function TirarFoto() {
   const [foto, setFoto] = useState(null);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
+  const [uploading, setUploading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -21,6 +21,19 @@ export default function TirarFoto() {
     verificaPermissoes();
   }, []);
 
+  const escolherFoto = async () => {
+    const resultado = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1,
+    });
+    if (!resultado.canceled) {
+      setFoto(resultado.assets[0].uri);
+    }
+  };
+  console.log(foto);
+
   const acessarCamera = async () => {
     const imagem = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
@@ -31,38 +44,31 @@ export default function TirarFoto() {
     if (!imagem.canceled) {
       await MediaLibrary.saveToLibraryAsync(imagem.assets[0].uri);
       setFoto(imagem.assets[0].uri);
-
-      // Upload the image to Firebase Storage
-      carregarStorage(imagem.assets[0].uri);
     }
   };
 
-  const carregarStorage = async (imageUrl) => {
+  const uploadStorage = async () => {
+    setUploading(true);
+
     try {
-      const imageName = imageUrl.split("/").pop(); // Extract the filename
-      const imageRef = ref(storage, `images/${imageName}`);
+      const { uri } = await FileSystem.getInfoAsync(foto);
+      const response = await fetch(uri);
 
-      const uploadTask = uploadBytesResumable(imageRef, {
-        uri: imageUrl,
-        type: "image/jpeg",
-      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch image");
+      }
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Progress handling (as shown in previous response)
-        },
-        (error) => {
-          console.error("Upload failed:", error);
-        },
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          console.log("Image uploaded successfully:", downloadURL);
-          // You can use the downloadURL for display or save to database
-        }
-      );
-    } catch (error) {
-      console.error("Error during upload:", error);
+      const blob = await response.blob();
+      const filename = foto.substring(foto.lastIndexOf("/") + 1);
+      const ref = firebase.storage().ref().child(filename);
+
+      await ref.put(blob);
+      setUploading(false);
+      Alert.alert("Upload feito");
+      setFoto(null);
+    } catch (erro) {
+      console.error(erro);
+      setUploading(false);
     }
   };
 
@@ -78,21 +84,24 @@ export default function TirarFoto() {
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
         </Pressable>
-        {foto && (
-          <Pressable
-            style={estilos.botaoFoto}
-            onPress={() => navigation.navigate("Galeria")}
-          >
-            <Text style={estilos.botaoText}>Ver fotos</Text>
-          </Pressable>
-        )}
-        <Pressable
-          style={estilos.botaoFoto}
-          onPress={() => carregarStorage(foto)}
-        >
-          <Text>Salvar no Storage</Text>
+        <Pressable style={estilos.botaoFoto}>
+          <Text style={estilos.botaoText} onPress={escolherFoto}>
+            Carregar imagem
+          </Text>
+        </Pressable>
+        <Pressable style={estilos.botaoFoto}>
+          <Text style={estilos.botaoText} onPress={uploadStorage}>
+            Storage
+          </Text>
         </Pressable>
       </View>
+
+      <Pressable
+        style={estilos.botaoFoto}
+        onPress={() => navigation.navigate("Galeria")}
+      >
+        <Text style={estilos.botaoText}>Ver fotos</Text>
+      </Pressable>
     </View>
   );
 }
