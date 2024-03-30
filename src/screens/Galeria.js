@@ -1,39 +1,45 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, View, Image, Text } from "react-native";
 
-import { getStorage, ref, listAll } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
 
 export default function Galeria() {
   const [arquivos, setArquivos] = useState([]);
 
   const storage = getStorage();
-  const imagesRef = ref(storage, "images");
+  const imagesRef = ref(storage, "");
 
   useEffect(() => {
-    const listImages = async () => {
-      const imageList = await listAll(imagesRef);
-
-      const downloadURLs = [];
-      for await (const imageRef of imageList.items) {
-        const downloadURL = await getDownloadURL(imageRef);
-        downloadURLs.push(downloadURL);
+    const fetchImages = async () => {
+      try {
+        const imageList = await listAll(imagesRef);
+        const downloadURLs = [];
+        for await (const imageRef of imageList.items) {
+          const downloadURL = await getDownloadURL(imageRef);
+          downloadURLs.push(downloadURL);
+        }
+        setArquivos(downloadURLs);
+        console.log("downloads", downloadURLs);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        // Handle the error appropriately, e.g., display an error message to the user
       }
-
-      setArquivos(downloadURLs);
-      console.log(downloadURLs);
     };
 
-    listImages();
+    fetchImages();
   }, []);
 
   return (
     <View style={styles.container}>
-      {arquivos.map((downloadURL) => (
-        <Image
-          key={downloadURL}
-          source={{ uri: downloadURL }}
-          style={styles.imagem}
-        />
+      {arquivos.map((downloadURL, index) => (
+        <>
+          <Image
+            key={index}
+            source={{ uri: downloadURL }}
+            style={styles.imagem}
+          />
+          <Text>Imagem</Text>
+        </>
       ))}
     </View>
   );
