@@ -15,6 +15,7 @@ export default function Home() {
     <SafeContainer>
       <View style={estilos.containerInput}>
         <TextInput
+          value={nome}
           style={estilos.input}
           placeholder="Digite a Legenda do local"
           onChangeText={(textDigitado) => setNome(textDigitado)}
