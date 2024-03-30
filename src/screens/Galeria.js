@@ -20,7 +20,7 @@ export default function Galeria() {
       }
 
       setArquivos(downloadURLs);
-      console.log(downloadURLs);
+      console.log("dowloads", downloadURLs);
     };
 
     listImages();
