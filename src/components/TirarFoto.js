@@ -4,7 +4,9 @@ import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as FileSystem from "expo-file-system";
-import { firebase } from "../../firebase.config";
+import { firebaseConfig } from "../../firebase.config";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 
 export default function TirarFoto() {
   const [foto, setFoto] = useState(null);
@@ -56,12 +58,16 @@ export default function TirarFoto() {
       if (!response.ok) {
         throw new Error("Failed to fetch image");
       }
-
       const blob = await response.blob();
+      const storage = getStorage();
       const filename = foto.substring(foto.lastIndexOf("/") + 1);
-      const ref = firebase.storage().ref().child(filename);
+      const storageRef = ref(storage, filename);
 
-      await ref.put(blob);
+      await uploadBytes(storageRef, blob);
+
+      // Get download URL (optional)
+      const downloadURL = await getDownloadURL(storageRef);
+      console.log("Download URL:", downloadURL);
       setUploading(false);
       Alert.alert("Upload feito");
       setFoto(null);
@@ -86,7 +92,7 @@ export default function TirarFoto() {
 
         <Pressable style={estilos.botaoFoto}>
           <Text style={estilos.botaoText} onPress={uploadStorage}>
-            Storage
+            Enviar dados para firebase
           </Text>
         </Pressable>
       </View>
