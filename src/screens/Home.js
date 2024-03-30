@@ -13,41 +13,19 @@ import { AntDesign } from "@expo/vector-icons";
 
 import SafeContainer from "../components/SafeContainer";
 import TirarFoto from "../components/TirarFoto"; // Assuming firebase.config.js is in the same directory
-// import firebase from "firebase/compat/app";
-// Required for side-effects
-// import "firebase/firestore";
 
-// import firebaseConfig from "../../firebase.config"; // Assuming this contains your config
-// Get Firestore instance
-// const firestore = getFirestore();
-// Para usar o Firestore, é preciso importar getFirestore de firebase/firestore e obter uma instância do Firestore:
-// import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import firebaseConfig from "../../firebase.config";
 
-// const app = initializeApp(firebaseConfig);
-import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
+import app from "../../firebase.config";
 
 const db = getFirestore(app);
 console.log("DB is", db);
 
 export default function Home() {
   const [nome, setNome] = useState("");
-  // MAPA
   const [minhaLocalizacao, setminhaLocalizacao] = useState(null);
   const [localizacao, setLocalizacao] = useState(null);
-
-  // const db = firebase.firestore();
-  // const app = initializeApp(firebaseConfig);
-  // firestore()
-  //   .collection("Users")
-  //   .add({
-  //     name: "Ada Lovelace",
-  //     age: 30,
-  //   })
-  //   .then(() => {
-  //     console.log("User added!");
-  //   });
 
   const salvarLugar = async () => {
     if (!nome || !localizacao) {
@@ -105,26 +83,6 @@ export default function Home() {
     obterLocalizacao();
   }, []);
   console.log(minhaLocalizacao); //Esperar carregar no console para testar
-
-  /*Neste código, a coleção "users" não existe antes de chamar set(). No entanto, quando o documento é criado, a coleção "users" é criada automaticamente.
-  const db = firebase.firestore();*/
-
-  // db.collection("lugares")
-  //   .doc("uid")
-  //   .set({
-  //     name: "John Doe",
-  //     image: downloadURL,
-  //     info: {
-  //       address: {
-  //         location: new firestore.GeoPoint(53.483959, -2.244644),
-  //       },
-  //     },
-  //   })
-  //   .then(() => {
-  //     console.log("User added!");
-  //   });
-
-  // MAPA
 
   return (
     <SafeContainer>
