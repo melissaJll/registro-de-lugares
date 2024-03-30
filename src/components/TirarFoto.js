@@ -6,9 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 import * as FileSystem from "expo-file-system";
 import { firebaseConfig } from "../../firebase.config";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
 
 export default function TirarFoto() {
+  const storage = getStorage();
   const [foto, setFoto] = useState(null);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const [uploading, setUploading] = useState(false);
@@ -92,7 +92,7 @@ export default function TirarFoto() {
 
         <Pressable style={estilos.botaoFoto}>
           <Text style={estilos.botaoText} onPress={uploadStorage}>
-            Enviar dados para firebase
+            Enviar Storage
           </Text>
         </Pressable>
       </View>
