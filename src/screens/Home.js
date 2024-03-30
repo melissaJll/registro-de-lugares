@@ -13,21 +13,23 @@ import { AntDesign } from "@expo/vector-icons";
 
 import SafeContainer from "../components/SafeContainer";
 import TirarFoto from "../components/TirarFoto"; // Assuming firebase.config.js is in the same directory
-import { initializeApp } from "firebase/app";
-import app from "../../firebase.config";
-import { addDoc, collection } from "firebase/firestore";
-
-import firebase from "firebase/compat/app";
+// import firebase from "firebase/compat/app";
 // Required for side-effects
-import "firebase/firestore";
+// import "firebase/firestore";
 
-import { getFirestore } from "firebase/firestore";
-import firebaseConfig from "../../firebase.config"; // Assuming this contains your config
-
+// import firebaseConfig from "../../firebase.config"; // Assuming this contains your config
 // Get Firestore instance
-const firestore = getFirestore();
+// const firestore = getFirestore();
 // Para usar o Firestore, é preciso importar getFirestore de firebase/firestore e obter uma instância do Firestore:
-//const db = getFirestore();
+// import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import firebaseConfig from "../../firebase.config";
+
+// const app = initializeApp(firebaseConfig);
+import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
+
+const db = getFirestore(app);
+console.log("DB is", db);
 
 export default function Home() {
   const [nome, setNome] = useState("");
@@ -52,39 +54,21 @@ export default function Home() {
       alert("Preencha a legenda e marque um local no mapa!");
       return;
     }
-    console.log(nome);
-    console.log(localizacao.longitude);
-    console.log(localizacao.latitude);
 
     try {
-      // const docRef = await addDoc(collection(db, "lugares"), {
-      //   nome: nome,
-      //   // Assuming you have a way to get the image URL from TirarFoto component
-      //   foto: "",
-      //   localizacao: new firebase.firestore.GeoPoint(
-      //     localizacao.latitude,
-      //     localizacao.longitude
-      //   ),
-      // });
-
-      firestore()
-        .collection("lugares")
-        .set({
-          nome: nome,
-          foto: "",
-          localizacao: new firebase.firestore.GeoPoint(
-            localizacao.latitude,
-            localizacao.longitude
-          ),
-        })
-        .then(() => {
-          console.log("User added!");
-        });
-
+      const docRef = await addDoc(collection(db, "lugares"), {
+        nome: nome,
+        foto: "", // Assuming you have a way to get the image URL from TirarFoto component
+        // localizacao: new db.firestore.GeoPoint(
+        //   localizacao.latitude,
+        //   localizacao.longitude
+        // ),
+      });
       console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      alert("Erro ao salvar lugar. Tente novamente.");
+      alert("Lugar salvo com sucesso!"); // Informative success message
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Erro ao salvar lugar. Tente novamente."); // User-friendly error message
     }
   };
 
