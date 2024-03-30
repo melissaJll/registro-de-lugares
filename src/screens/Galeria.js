@@ -31,10 +31,10 @@ export default function Galeria() {
 
   return (
     <View style={styles.container}>
-      {arquivos.map((downloadURL) => (
+      {arquivos.map((downloadURL, index) => (
         <>
           <Image
-            key={downloadURL}
+            key={index}
             source={{ uri: downloadURL }}
             style={styles.imagem}
           />
