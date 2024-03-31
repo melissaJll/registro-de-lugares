@@ -149,18 +149,18 @@ export default function TirarFoto() {
         <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
           <Text style={estilos.botaoTextGhost}>Tirar uma nova foto</Text>
         </Pressable>
-        <Pressable
+        {/* <Pressable
           style={estilos.botaoFotoGhost}
-          onPress={() => navigation.navigate("TodasAsFotos")}
+          onPress={() => navigation.navigate("FotosSlider")}
         >
           <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
-        </Pressable>
-        {/* <Pressable
+        </Pressable> */}
+        <Pressable
           style={estilos.botaoFotoGhost}
           onPress={() => navigation.navigate("Galeria")}
         >
           <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
-        </Pressable> */}
+        </Pressable>
       </View>
 
       {descricao && (
@@ -191,13 +191,13 @@ const estilos = StyleSheet.create({
     marginHorizontal: 5,
   },
   botaoText: {
-    color: "#FAF5E3", // Cor do texto alterada para branco
+    color: "#fff", // Cor do texto alterada para branco
     fontWeight: "600",
     fontSize: 18,
     textAlign: "center",
   },
   botaoFoto: {
-    backgroundColor: "#0C0D0F",
+    backgroundColor: "#F46A2E",
     borderRadius: 12,
     paddingVertical: 15,
     paddingHorizontal: 20,
