@@ -69,14 +69,14 @@ const estilos = StyleSheet.create({
     alignItems: "center",
   },
   botaoText: {
-    color: "#09768f",
+    color: "#0C0D0F",
     fontWeight: "600",
     fontSize: 18,
   },
   botaoMapa: {
     borderWidth: 1,
-    borderRadius: 14,
-    borderColor: "#0c8ca8",
+    borderRadius: 12,
+    borderColor: "#fff",
     padding: 15,
     borderStyle: "solid",
     marginTop: 15,
@@ -86,5 +86,7 @@ const estilos = StyleSheet.create({
     width: 340,
     height: 250,
     borderRadius: 8,
+    borderColor: "#262628",
+    borderWidth: 0.3,
   },
 });

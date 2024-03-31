@@ -63,24 +63,4 @@ export default function Home() {
 
 const estilos = StyleSheet.create({
   containerFoto: {},
-
-  botaoText: {
-    color: "#09768f",
-    fontWeight: "600",
-    fontSize: 18,
-  },
-  botaoMapa: {
-    borderWidth: 1,
-    borderRadius: 14,
-    borderColor: "#0c8ca8",
-    padding: 15,
-    borderStyle: "solid",
-    marginTop: 15,
-    marginBottom: 25,
-  },
-  map: {
-    width: 300,
-    height: 250,
-    borderRadius: 8,
-  },
 });
