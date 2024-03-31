@@ -53,29 +53,16 @@ export default function Home() {
 
   return (
     <SafeContainer>
-      <TirarFoto />
-
-      <Mapa></Mapa>
-
-      <Pressable onPress={salvarLugar}>
-        <Text>salvar Lugar</Text>
-      </Pressable>
+      <View style={estilos.containerFoto}>
+        <Mapa />
+        <TirarFoto />
+      </View>
     </SafeContainer>
   );
 }
 
 const estilos = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-
-  text: {
-    fontSize: 20,
-    color: "#056a80",
-    marginVertical: 5,
-    fontWeight: "bold",
-  },
+  containerFoto: {},
 
   botaoText: {
     color: "#09768f",

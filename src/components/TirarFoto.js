@@ -21,6 +21,7 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
 
 import { GeoPoint } from "firebase/firestore";
+import Mapa from "./Mapa";
 
 const db = getFirestore(app);
 export default function TirarFoto() {
@@ -122,23 +123,26 @@ export default function TirarFoto() {
   };
 
   return (
-    <View style={estilos.container}>
-      {foto && (
-        <Image
-          source={{ uri: foto }}
-          style={{ width: 340, height: 250, borderRadius: 8 }}
-        />
-      )}
-      <View style={estilos.containerInput}>
-        <TextInput
-          value={descricao}
-          onChangeText={(text) => setDescricao(text)} // Atualiza o estado descricao conforme o texto é digitado
-          style={estilos.input}
-          placeholder="Descrição da Imagem"
-        />
-        <AntDesign name="enter" size={33} color="#056a80" />
-      </View>
+    <View style={estilos.containerFoto}>
       {descricao && <Text style={estilos.text}>Local: {descricao}</Text>}
+
+      {foto && (
+        <>
+          <Image
+            source={{ uri: foto }}
+            style={{ width: 340, height: 250, borderRadius: 8 }}
+          />
+          <View style={estilos.containerInput}>
+            <TextInput
+              value={descricao}
+              onChangeText={(text) => setDescricao(text)} // Atualiza o estado descricao conforme o texto é digitado
+              style={estilos.input}
+              placeholder="Descrição da Imagem"
+            />
+            <AntDesign name="enter" size={33} color="#056a80" />
+          </View>
+        </>
+      )}
 
       <View style={estilos.viewBotoes}>
         <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
@@ -152,21 +156,18 @@ export default function TirarFoto() {
         </Pressable>
       </View>
 
-      <Pressable style={estilos.botaoFoto}>
-        <Text style={estilos.botaoText} onPress={uploadStorage}>
-          Salvar Lugar
-        </Text>
-      </Pressable>
+      {descricao && (
+        <Pressable style={estilos.botaoFoto}>
+          <Text style={estilos.botaoText} onPress={uploadStorage}>
+            Salvar Lugar
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 }
 
 const estilos = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-
   botaoTextGhost: {
     color: "#09768f",
     fontWeight: "600",
@@ -186,19 +187,26 @@ const estilos = StyleSheet.create({
     color: "#ffffff", // Cor do texto alterada para branco
     fontWeight: "600",
     fontSize: 18,
+    textAlign: "center",
   },
   botaoFoto: {
-    backgroundColor: "#09768f", // Cor de fundo alterada para azul claro
+    backgroundColor: "#09768f",
     borderRadius: 14,
     paddingVertical: 15,
-    paddingHorizontal: 20, // Adicionado preenchimento horizontal para melhorar a aparência
+    paddingHorizontal: 20,
     marginTop: 15,
-    marginBottom: 20,
+    marginBottom: 50,
     marginHorizontal: 5,
   },
 
   viewBotoes: {
     flexDirection: "row",
+  },
+  text: {
+    fontSize: 20,
+    color: "#056a80",
+    marginVertical: 5,
+    fontWeight: "bold",
   },
   input: {
     height: 45,
