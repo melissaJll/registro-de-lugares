@@ -133,22 +133,21 @@ export default function TirarFoto() {
       {descricao && <Text style={estilos.text}>Local: {descricao}</Text>}
 
       <View style={estilos.viewBotoes}>
-        <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
-          <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
+        <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
+          <Text style={estilos.botaoTextGhost}>Tirar uma nova foto</Text>
         </Pressable>
-
-        <Pressable style={estilos.botaoFoto}>
-          <Text style={estilos.botaoText} onPress={uploadStorage}>
-            Salvar Lugar
-          </Text>
+        <Pressable
+          style={estilos.botaoFotoGhost}
+          onPress={() => navigation.navigate("Galeria")}
+        >
+          <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
         </Pressable>
       </View>
 
-      <Pressable
-        style={estilos.botaoFoto}
-        onPress={() => navigation.navigate("Galeria")}
-      >
-        <Text style={estilos.botaoText}>Ver fotos</Text>
+      <Pressable style={estilos.botaoFoto}>
+        <Text style={estilos.botaoText} onPress={uploadStorage}>
+          Salvar Lugar
+        </Text>
       </Pressable>
     </View>
   );
@@ -160,12 +159,12 @@ const estilos = StyleSheet.create({
     alignItems: "center",
   },
 
-  botaoText: {
+  botaoTextGhost: {
     color: "#09768f",
     fontWeight: "600",
     fontSize: 18,
   },
-  botaoFoto: {
+  botaoFotoGhost: {
     borderWidth: 1,
     borderRadius: 14,
     borderColor: "#0c8ca8",
@@ -175,6 +174,21 @@ const estilos = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 5,
   },
+  botaoText: {
+    color: "#ffffff", // Cor do texto alterada para branco
+    fontWeight: "600",
+    fontSize: 18,
+  },
+  botaoFoto: {
+    backgroundColor: "#09768f", // Cor de fundo alterada para azul claro
+    borderRadius: 14,
+    paddingVertical: 15,
+    paddingHorizontal: 20, // Adicionado preenchimento horizontal para melhorar a aparência
+    marginTop: 15,
+    marginBottom: 20,
+    marginHorizontal: 5,
+  },
+
   viewBotoes: {
     flexDirection: "row",
   },
