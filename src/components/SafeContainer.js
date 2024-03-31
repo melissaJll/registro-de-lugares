@@ -14,8 +14,8 @@ export default function SafeContainer({ children }) {
       colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
       style={estilos.container}
     >
-      <ScrollView>
-        <SafeAreaView style={estilos.container}>{children}</SafeAreaView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <SafeAreaView>{children}</SafeAreaView>
       </ScrollView>
     </LinearGradient>
   );
@@ -25,5 +25,6 @@ const estilos = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
 });
