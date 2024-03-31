@@ -10,14 +10,14 @@ import * as SplashScreen from "expo-splash-screen";
 
 export default function SafeContainer({ children }) {
   return (
-    <ScrollView>
-      <LinearGradient
-        colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
-        style={estilos.container}
-      >
+    <LinearGradient
+      colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
+      style={estilos.container}
+    >
+      <ScrollView>
         <SafeAreaView style={estilos.container}>{children}</SafeAreaView>
-      </LinearGradient>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
