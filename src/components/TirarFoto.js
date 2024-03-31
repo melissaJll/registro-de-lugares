@@ -1,5 +1,14 @@
-import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { AntDesign } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -7,6 +16,11 @@ import * as FileSystem from "expo-file-system";
 import { firebaseConfig } from "../../firebase.config";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
+
+const db = getFirestore(app);
 export default function TirarFoto() {
   const storage = getStorage();
   const [foto, setFoto] = useState(null);
@@ -14,6 +28,7 @@ export default function TirarFoto() {
   const [uploading, setUploading] = useState(false);
   const navigation = useNavigation();
 
+  const [descricao, setDescricao] = useState("");
   useEffect(() => {
     async function verificaPermissoes() {
       const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
@@ -52,28 +67,53 @@ export default function TirarFoto() {
     setUploading(true);
 
     try {
+      if (!descricao) {
+        throw new Error("Please provide a description");
+      }
+      // Check if image URI exists
+      if (!foto) {
+        throw new Error("No image selected");
+      }
+
+      // Fetch image info
       const { uri } = await FileSystem.getInfoAsync(foto);
       const response = await fetch(uri);
 
+      // Check if fetching image was successful
       if (!response.ok) {
         throw new Error("Failed to fetch image");
       }
-      const blob = await response.blob();
-      const storage = getStorage();
-      const filename = foto.substring(foto.lastIndexOf("/") + 1);
-      const storageRef = ref(storage, filename);
 
+      // Convert image to blob
+      const blob = await response.blob();
+
+      // Get image name (you can modify this to include a dynamic name)
+      const imageName = foto.substring(foto.lastIndexOf("/") + 1);
+
+      // Upload image to Firebase storage
+      const storageRef = ref(storage, imageName);
       await uploadBytes(storageRef, blob);
 
-      // Get download URL (optional)
+      // Get download URL
       const downloadURL = await getDownloadURL(storageRef);
+
+      // Save image URL and description to Firestore
+      const placesCollectionRef = collection(db, "lugares");
+      await addDoc(placesCollectionRef, {
+        foto: downloadURL,
+        descricao: descricao, // Assuming 'nome' is the description captured from the text input
+      });
+
+      // Print download URL and do further processing if needed
       console.log("Download URL:", downloadURL);
+
       setUploading(false);
-      Alert.alert("Upload feito");
+      Alert.alert("Upload done");
       setFoto(null);
-    } catch (erro) {
-      console.error(erro);
+    } catch (error) {
+      console.error(error);
       setUploading(false);
+      Alert.alert("Failed to upload image", error.message);
     }
   };
 
@@ -85,6 +125,17 @@ export default function TirarFoto() {
           style={{ width: 340, height: 250, borderRadius: 8 }}
         />
       )}
+      <View style={estilos.containerInput}>
+        <TextInput
+          value={descricao}
+          onChangeText={(text) => setDescricao(text)} // Atualiza o estado descricao conforme o texto é digitado
+          style={estilos.input}
+          placeholder="Descrição da Imagem"
+        />
+        <AntDesign name="enter" size={33} color="#056a80" />
+      </View>
+      {descricao && <Text style={estilos.text}>Local: {descricao}</Text>}
+
       <View style={estilos.viewBotoes}>
         <Pressable onPress={acessarCamera} style={estilos.botaoFoto}>
           <Text style={estilos.botaoText}>Tirar uma nova foto</Text>
@@ -130,5 +181,20 @@ const estilos = StyleSheet.create({
   },
   viewBotoes: {
     flexDirection: "row",
+  },
+  input: {
+    height: 45,
+    width: 300,
+    borderColor: "gray",
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 20,
+    borderColor: "#0c8ca8",
+    borderWidth: 2,
+  },
+  containerInput: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
