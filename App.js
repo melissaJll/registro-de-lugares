@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 import Home from "./src/screens/Home";
 import Galeria from "./src/screens/Galeria";
-import TodasAsFotos from "./src/screens/TodasAsFotos";
+import FotosSlider from "./src/screens/FotosSlider";
 
 export default function App() {
   return (
@@ -17,7 +17,7 @@ export default function App() {
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
-            headerStyle: { backgroundColor: "#0c8ca8" },
+            headerStyle: { backgroundColor: "#232728" },
             headerTintColor: "white",
           }}
         >
@@ -29,7 +29,7 @@ export default function App() {
             // Desabilita o nome na home
           />
           <Stack.Screen name="Galeria" component={Galeria} />
-          <Stack.Screen name="TodasAsFotos" component={TodasAsFotos} />
+          <Stack.Screen name="FotosSlider" component={FotosSlider} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
