@@ -151,10 +151,16 @@ export default function TirarFoto() {
         </Pressable>
         <Pressable
           style={estilos.botaoFotoGhost}
-          onPress={() => navigation.navigate("Galeria")}
+          onPress={() => navigation.navigate("TodasAsFotos")}
         >
           <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
         </Pressable>
+        {/* <Pressable
+          style={estilos.botaoFotoGhost}
+          onPress={() => navigation.navigate("Galeria")}
+        >
+          <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
+        </Pressable> */}
       </View>
 
       {descricao && (
@@ -170,14 +176,14 @@ export default function TirarFoto() {
 
 const estilos = StyleSheet.create({
   botaoTextGhost: {
-    color: "#09768f",
+    color: "#0C0D0F",
     fontWeight: "600",
     fontSize: 18,
   },
   botaoFotoGhost: {
     borderWidth: 1,
-    borderRadius: 14,
-    borderColor: "#0c8ca8",
+    borderRadius: 12,
+    borderColor: "#0C0D0F",
     padding: 15,
     borderStyle: "solid",
     marginTop: 15,
@@ -185,14 +191,14 @@ const estilos = StyleSheet.create({
     marginHorizontal: 5,
   },
   botaoText: {
-    color: "#ffffff", // Cor do texto alterada para branco
+    color: "#FAF5E3", // Cor do texto alterada para branco
     fontWeight: "600",
     fontSize: 18,
     textAlign: "center",
   },
   botaoFoto: {
-    backgroundColor: "#09768f",
-    borderRadius: 14,
+    backgroundColor: "#0C0D0F",
+    borderRadius: 12,
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginTop: 15,
@@ -205,7 +211,7 @@ const estilos = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: "#056a80",
+    color: "#0C0D0F",
     marginVertical: 5,
     fontWeight: "bold",
   },
@@ -216,7 +222,7 @@ const estilos = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     marginVertical: 20,
-    borderColor: "#0c8ca8",
+    borderColor: "#0C0D0F",
     borderWidth: 2,
   },
   containerInput: {
