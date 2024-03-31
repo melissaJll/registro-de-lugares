@@ -64,56 +64,52 @@ export default function TirarFoto() {
   };
 
   const uploadStorage = async () => {
-    setUploading(true);
+    setUploading(true); // Define uploading como true para indicar que o processo de upload está em andamento
 
     try {
-      if (!descricao) {
-        throw new Error("Please provide a description");
-      }
-      // Check if image URI exists
-      if (!foto) {
-        throw new Error("No image selected");
+      if (!descricao || !foto) {
+        // Se não houver descrição ou imagem, lança um erro correspondente
+        throw new Error(
+          "Por favor, forneça uma descrição e selecione uma imagem"
+        );
       }
 
-      // Fetch image info
-      const { uri } = await FileSystem.getInfoAsync(foto);
-      const response = await fetch(uri);
+      // Obtém informações sobre a imagem selecionada
+      const { uri } = await FileSystem.getInfoAsync(foto); // Obtém o URI da imagem
+      const response = await fetch(uri); // Realiza uma requisição para obter a imagem
 
-      // Check if fetching image was successful
+      // Verifica se a requisição da imagem foi bem-sucedida
       if (!response.ok) {
-        throw new Error("Failed to fetch image");
+        throw new Error("Falha ao obter a imagem"); // Se não for, lança um erro
       }
 
-      // Convert image to blob
+      // Converte a imagem para um blob
+      // Obtém o nome da imagem
       const blob = await response.blob();
-
-      // Get image name (you can modify this to include a dynamic name)
       const imageName = foto.substring(foto.lastIndexOf("/") + 1);
 
-      // Upload image to Firebase storage
-      const storageRef = ref(storage, imageName);
-      await uploadBytes(storageRef, blob);
+      // Faz o upload da imagem para o Firebase Storage
+      const storageRef = ref(storage, imageName); // Cria uma referência para o local de armazenamento da imagem
+      await uploadBytes(storageRef, blob); // Realiza o upload da imagem para o Firebase Storage
 
-      // Get download URL
+      // Obtém o URL de download da imagem
       const downloadURL = await getDownloadURL(storageRef);
 
-      // Save image URL and description to Firestore
-      const placesCollectionRef = collection(db, "lugares");
+      // Salva o URL de download da imagem e a descrição no Firestore
+      const placesCollectionRef = collection(db, "lugares"); // Obtém a referência para a coleção "lugares" no Firestore
       await addDoc(placesCollectionRef, {
-        foto: downloadURL,
-        descricao: descricao, // Assuming 'nome' is the description captured from the text input
+        foto: downloadURL, // Adiciona o URL de download da imagem ao documento
+        descricao: descricao, // Adiciona a descrição ao documento (capturada do estado "descricao")
       });
-
-      // Print download URL and do further processing if needed
       console.log("Download URL:", downloadURL);
 
-      setUploading(false);
-      Alert.alert("Upload done");
-      setFoto(null);
+      setUploading(false); // Define uploading como false para indicar que o processo de upload foi concluído
+      Alert.alert("Upload concluído"); // Exibe um alerta indicando que o upload foi concluído com sucesso
+      setFoto(null); // Limpa o estado da imagem selecionada
     } catch (error) {
-      console.error(error);
-      setUploading(false);
-      Alert.alert("Failed to upload image", error.message);
+      console.error(error); // Registra qualquer erro no console
+      setUploading(false); // Define uploading como false para indicar que o processo de upload foi concluído (mesmo que com erro)
+      Alert.alert("Falha ao fazer upload da imagem", error.message); // Exibe um alerta indicando que ocorreu uma falha no upload
     }
   };
 
@@ -143,7 +139,7 @@ export default function TirarFoto() {
 
         <Pressable style={estilos.botaoFoto}>
           <Text style={estilos.botaoText} onPress={uploadStorage}>
-            Enviar Storage
+            Salvar Lugar
           </Text>
         </Pressable>
       </View>
