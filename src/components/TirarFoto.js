@@ -20,6 +20,8 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
 
+import { GeoPoint } from "firebase/firestore";
+
 const db = getFirestore(app);
 export default function TirarFoto() {
   const storage = getStorage();
@@ -29,6 +31,11 @@ export default function TirarFoto() {
   const navigation = useNavigation();
 
   const [descricao, setDescricao] = useState("");
+
+  const latitude = 40.7128; // Exemplo de latitude
+  const longitude = -74.006; // Exemplo de longitude
+  const coordenadas = new GeoPoint(latitude, longitude);
+
   useEffect(() => {
     async function verificaPermissoes() {
       const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
@@ -100,6 +107,7 @@ export default function TirarFoto() {
       await addDoc(placesCollectionRef, {
         foto: downloadURL, // Adiciona o URL de download da imagem ao documento
         descricao: descricao, // Adiciona a descrição ao documento (capturada do estado "descricao")
+        coordenadas: coordenadas,
       });
       console.log("Download URL:", downloadURL);
 
