@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
-// import getFirestore from "firebase/firestore";
 
 export default function Galeria() {
   const [arquivos, setArquivos] = useState([]);
 
-  /*listAll(imagesRef) é usado para buscar a lista de arquivos no bucket imagesRef. A variável imageList armazena o resultado da listagem.
-Um loop for await é utilizado para iterar sobre cada item na lista de arquivos (imageList.items).
-Dentro do loop, getDownloadURL(imageRef) é usado para obter a URL de download de cada arquivo. A URL é então adicionada à lista downloadURLs.*/
   const storage = getStorage();
   const imagesRef = ref(storage, "");
 
@@ -32,23 +28,6 @@ Dentro do loop, getDownloadURL(imageRef) é usado para obter a URL de download d
 
     fetchImages();
   }, []);
-
-  /* firestore().collection('lugares') faz referência à coleção "lugares" no Firestore. No entanto, essa coleção precisa existir previamente.
-Buscando dados:
-
-.get() inicia a busca de documentos na coleção "lugares".
-A função .then() é usada para lidar com os resultados retornados pela busca. */
-  // getFirestore()
-  //   .collection("Lugares")
-  //   .doc("ABC")
-  //   .get()
-  //   .then((documentSnapshot) => {
-  //     console.log("place exists: ", documentSnapshot.exists);
-
-  //     if (documentSnapshot.exists) {
-  //       console.log("place data: ", documentSnapshot.data());
-  //     }
-  //   });
 
   return (
     <View style={styles.container}>
