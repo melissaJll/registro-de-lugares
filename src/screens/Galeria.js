@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
+import SafeContainer from "../components/SafeContainer";
 
 export default function Galeria() {
   const [arquivos, setArquivos] = useState([]);
@@ -30,18 +31,20 @@ export default function Galeria() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {arquivos.map((downloadURL, index) => (
-        <>
-          <Image
-            key={index}
-            source={{ uri: downloadURL }}
-            style={styles.imagem}
-          />
-          <Text>Imagem</Text>
-        </>
-      ))}
-    </View>
+    <SafeContainer>
+      <View style={styles.container}>
+        {arquivos.map((downloadURL, index) => (
+          <>
+            <Image
+              key={index}
+              source={{ uri: downloadURL }}
+              style={styles.imagem}
+            />
+            <Text>{index}</Text>
+          </>
+        ))}
+      </View>
+    </SafeContainer>
   );
 }
 
