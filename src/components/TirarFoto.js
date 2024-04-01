@@ -23,6 +23,7 @@ import { GeoPoint } from "firebase/firestore";
 import Mapa from "./Mapa";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import Mapa from "./Mapa";
 
 const db = getFirestore(app);
 
@@ -30,7 +31,6 @@ export default function TirarFoto() {
   const storage = getStorage();
   const [foto, setFoto] = useState(null);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
-  const [uploading, setUploading] = useState(false);
   const navigation = useNavigation();
 
   const [descricao, setDescricao] = useState("");
@@ -38,6 +38,8 @@ export default function TirarFoto() {
   const latitude = 40.7128; // teste
   const longitude = -74.006;
   const coordenadas = new GeoPoint(latitude, longitude);
+
+  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
 
   useEffect(() => {
     async function verificaPermissoes() {
@@ -155,7 +157,7 @@ export default function TirarFoto() {
       <View style={estilos.viewBotoes}>
         <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
           <MaterialIcons name="add-to-photos" size={24} color="black" />
-          <Text style={estilos.botaoTextGhost}>Tirar uma nova foto</Text>
+          <Text style={estilos.botaoTextGhost}>Tirar nova foto</Text>
         </Pressable>
         <Pressable
           style={estilos.botaoFotoGhost}
@@ -165,6 +167,7 @@ export default function TirarFoto() {
           <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
         </Pressable>
       </View>
+      <Mapa localizacao={localizacao} />
     </View>
   );
 }
@@ -205,7 +208,7 @@ const estilos = StyleSheet.create({
     backgroundColor: "#F46A2E",
     borderRadius: 12,
     paddingVertical: 15,
-    paddingHorizontal: 95,
+    paddingHorizontal: 115,
     marginTop: 15,
 
     marginHorizontal: 5,
@@ -219,12 +222,12 @@ const estilos = StyleSheet.create({
   },
   input: {
     height: 45,
-    width: 300,
+    width: 343,
     borderColor: "gray",
-    borderWidth: 1,
     padding: 10,
     marginTop: 10,
     borderColor: "#0C0D0F",
     borderWidth: 2,
+    borderRadius: 4,
   },
 });

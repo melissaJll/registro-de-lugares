@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import SafeContainer from "../components/SafeContainer";
@@ -15,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 export default function FotosSlider() {
   const [arquivos, setArquivos] = useState([]);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
 
   useEffect(() => {
     // Função para buscar as fotos no Firestore
@@ -30,6 +32,7 @@ export default function FotosSlider() {
         const imageData = snapshot.docs.map((doc) => doc.data());
         // Atualiza o estado com os dados das fotos
         setArquivos(imageData);
+        setLoading(false); // Marca o carregamento como completo após buscar as imagens
       } catch (error) {
         console.error("Error fetching images:", error);
       }
@@ -49,15 +52,21 @@ export default function FotosSlider() {
   // Componente FlatList para exibir as fotos em um carrossel horizontal
   return (
     <SafeContainer>
-      <View style={estilos.container}>
-        <FlatList
-          data={arquivos}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal
-          pagingEnabled
-        />
-      </View>
+      {loading ? ( // Renderiza o indicador de carregamento se ainda estiver carregando
+        <View style={estilos.loadingContainer}>
+          <ActivityIndicator size="large" color="#000" />
+        </View>
+      ) : (
+        <View style={estilos.container}>
+          <FlatList
+            data={arquivos}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            pagingEnabled
+          />
+        </View>
+      )}
       <Pressable
         style={estilos.botaoIrGaleria}
         onPress={() => navigation.navigate("Galeria")}
@@ -116,5 +125,8 @@ const estilos = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  loadingContainer: {
+    padding: 30,
   },
 });

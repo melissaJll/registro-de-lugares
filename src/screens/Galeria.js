@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import { StyleSheet, View, Image, Text, ActivityIndicator } from "react-native";
 
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -8,6 +8,9 @@ import SafeContainer from "../components/SafeContainer";
 export default function Galeria() {
   const [arquivos, setArquivos] = useState([]);
   const db = getFirestore();
+
+  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchImagesFromFirestore = async () => {
@@ -19,6 +22,7 @@ export default function Galeria() {
           images.push({ foto: data.foto, descricao: data.descricao });
         });
         setArquivos(images);
+        setLoading(false);
       } catch (error) {
         console.error("Erro no fetching do Firestore:", error);
       }
@@ -29,19 +33,25 @@ export default function Galeria() {
 
   return (
     <SafeContainer>
-      <View style={styles.container}>
-        {arquivos.map((item, index) => (
-          <View key={index} style={styles.itemContainer}>
-            <Image source={{ uri: item.foto }} style={styles.imagem} />
-            <Text style={styles.descricao}>{item.descricao}</Text>
-          </View>
-        ))}
-      </View>
+      {loading ? ( // Renderiza o indicador de carregamento se ainda estiver carregando
+        <View style={estilos.loadingContainer}>
+          <ActivityIndicator size="large" color="#000" />
+        </View>
+      ) : (
+        <View style={estilos.container}>
+          {arquivos.map((item, index) => (
+            <View key={index} style={estilos.itemContainer}>
+              <Text style={estilos.descricao}>{item.descricao}</Text>
+              <Image source={{ uri: item.foto }} style={estilos.imagem} />
+            </View>
+          ))}
+        </View>
+      )}
     </SafeContainer>
   );
 }
 
-const styles = StyleSheet.create({
+const estilos = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
@@ -50,17 +60,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   itemContainer: {
-    marginHorizontal: 2,
+    marginHorizontal: 3,
     marginVertical: 20,
   },
   imagem: {
     width: 200,
-    height: 200,
+    height: 250,
     borderRadius: 8,
   },
   descricao: {
     marginTop: 5,
-    textAlign: "center",
+    marginLeft: 5,
     fontWeight: "500",
+    fontSize: 16,
+  },
+  loadingContainer: {
+    padding: 30,
   },
 });
