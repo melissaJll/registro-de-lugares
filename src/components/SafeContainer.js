@@ -11,7 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 export default function SafeContainer({ children }) {
   return (
     <LinearGradient
-      colors={["#F0FFFF", "#fffff2", "#d7f6fc"]}
+      colors={["#F3EEDD", "#fffff2", "#F3EEDD"]}
       style={estilos.container}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
