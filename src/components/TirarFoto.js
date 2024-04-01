@@ -23,7 +23,6 @@ import { GeoPoint } from "firebase/firestore";
 import Mapa from "./Mapa";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import Mapa from "./Mapa";
 
 const db = getFirestore(app);
 
@@ -39,6 +38,7 @@ export default function TirarFoto() {
   const longitude = -74.006;
   const coordenadas = new GeoPoint(latitude, longitude);
 
+  const [uploading, setUploading] = useState(true); // Estado para controlar o carregamento
   const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
 
   useEffect(() => {
@@ -167,7 +167,6 @@ export default function TirarFoto() {
           <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
         </Pressable>
       </View>
-      <Mapa localizacao={localizacao} />
     </View>
   );
 }
