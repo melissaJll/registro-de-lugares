@@ -42,7 +42,6 @@ export default function FotosSlider() {
   // Função para renderizar cada item da lista de fotos
   const renderItem = ({ item }) => (
     <View style={estilos.item}>
-      <Text style={estilos.descricao}>{item.descricao}</Text>
       <Image source={{ uri: item.foto }} style={estilos.imagem} />
     </View>
   );
