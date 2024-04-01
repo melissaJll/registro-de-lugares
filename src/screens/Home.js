@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <SafeContainer>
       <View style={estilos.containerFoto}>
-        <Mapa />
+        {/* <Mapa /> */}
         <TirarFoto />
       </View>
     </SafeContainer>
