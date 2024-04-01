@@ -1,7 +1,6 @@
 // RNFS
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import * as SplashScreen from "expo-splash-screen";
 
 // import * as SplashScreen from "expo-splash-screen";
