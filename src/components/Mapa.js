@@ -67,6 +67,7 @@ const estilos = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    marginBottom: 20,
   },
   botaoText: {
     color: "#0C0D0F",
@@ -79,8 +80,7 @@ const estilos = StyleSheet.create({
     borderColor: "#fff",
     padding: 15,
     borderStyle: "solid",
-    marginTop: 15,
-    marginBottom: 25,
+    marginTop: 20,
   },
   map: {
     width: 340,

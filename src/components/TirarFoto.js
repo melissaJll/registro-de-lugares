@@ -15,13 +15,14 @@ import { useNavigation } from "@react-navigation/native";
 import * as FileSystem from "expo-file-system";
 import { firebaseConfig } from "../../firebase.config";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
-import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
+import app from "../../firebase.config"; //exportando para fazer a instancia do firestore
 
 import { GeoPoint } from "firebase/firestore";
 import Mapa from "./Mapa";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 const db = getFirestore(app);
 
@@ -34,8 +35,8 @@ export default function TirarFoto() {
 
   const [descricao, setDescricao] = useState("");
 
-  const latitude = 40.7128; // Exemplo de latitude
-  const longitude = -74.006; // Exemplo de longitude
+  const latitude = 40.7128; // teste
+  const longitude = -74.006;
   const coordenadas = new GeoPoint(latitude, longitude);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ export default function TirarFoto() {
   };
 
   const uploadStorage = async () => {
-    setUploading(true); // Define uploading como true para indicar que o processo de upload está em andamento
+    setUploading(true); //  upload está em andamento
 
     try {
       if (!descricao || !foto) {
@@ -92,7 +93,7 @@ export default function TirarFoto() {
         throw new Error("Falha ao obter a imagem"); // Se não for, lança um erro
       }
 
-      // Converte a imagem para um blob
+      // Converte a imagem para um blob ( array de bytes )
       // Obtém o nome da imagem
       const blob = await response.blob();
       const imageName = foto.substring(foto.lastIndexOf("/") + 1);
@@ -113,19 +114,19 @@ export default function TirarFoto() {
       });
       console.log("Download URL:", downloadURL);
 
-      setUploading(false); // Define uploading como false para indicar que o processo de upload foi concluído
+      setUploading(false);
       Alert.alert("Upload concluído"); // Exibe um alerta indicando que o upload foi concluído com sucesso
       setFoto(null); // Limpa o estado da imagem selecionada
     } catch (error) {
-      console.error(error); // Registra qualquer erro no console
-      setUploading(false); // Define uploading como false para indicar que o processo de upload foi concluído (mesmo que com erro)
+      console.error(error);
+      setUploading(false);
       Alert.alert("Falha ao fazer upload da imagem", error.message); // Exibe um alerta indicando que ocorreu uma falha no upload
     }
   };
 
   return (
     <View style={estilos.containerFoto}>
-      {descricao && <Text style={estilos.text}>Local: {descricao}</Text>}
+      {descricao && <Text style={estilos.text}> {descricao}</Text>}
 
       {foto && (
         <>
@@ -140,45 +141,48 @@ export default function TirarFoto() {
               style={estilos.input}
               placeholder="Descrição da Imagem"
             />
-            <AntDesign name="enter" size={33} color="#056a80" />
           </View>
         </>
       )}
-
-      <View style={estilos.viewBotoes}>
-        <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
-          <Text style={estilos.botaoTextGhost}>Tirar uma nova foto</Text>
-        </Pressable>
-        {/* <Pressable
-          style={estilos.botaoFotoGhost}
-          onPress={() => navigation.navigate("FotosSlider")}
-        >
-          <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
-        </Pressable> */}
-        <Pressable
-          style={estilos.botaoFotoGhost}
-          onPress={() => navigation.navigate("Galeria")}
-        >
-          <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
-        </Pressable>
-      </View>
-
       {descricao && (
-        <Pressable style={estilos.botaoFoto}>
-          <Text style={estilos.botaoText} onPress={uploadStorage}>
+        <Pressable style={estilos.botaoFirestore}>
+          <Text style={estilos.botaoFirestoreText} onPress={uploadStorage}>
             Salvar Lugar
           </Text>
         </Pressable>
       )}
+
+      <View style={estilos.viewBotoes}>
+        <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
+          <MaterialIcons name="add-to-photos" size={24} color="black" />
+          <Text style={estilos.botaoTextGhost}>Tirar uma nova foto</Text>
+        </Pressable>
+        <Pressable
+          style={estilos.botaoFotoGhost}
+          onPress={() => navigation.navigate("FotosSlider")}
+        >
+          <FontAwesome name="picture-o" size={24} color="black" />
+          <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const estilos = StyleSheet.create({
+  containerFoto: {
+    alignItems: "center",
+  },
+  viewBotoes: {
+    flexDirection: "row",
+    marginBottom: 50,
+  },
+
   botaoTextGhost: {
     color: "#0C0D0F",
     fontWeight: "600",
     fontSize: 18,
+    marginLeft: 4,
   },
   botaoFotoGhost: {
     borderWidth: 1,
@@ -189,26 +193,24 @@ const estilos = StyleSheet.create({
     marginTop: 15,
     marginBottom: 20,
     marginHorizontal: 5,
+    flexDirection: "row",
   },
-  botaoText: {
+  botaoFirestoreText: {
     color: "#fff", // Cor do texto alterada para branco
     fontWeight: "600",
     fontSize: 18,
     textAlign: "center",
   },
-  botaoFoto: {
+  botaoFirestore: {
     backgroundColor: "#F46A2E",
     borderRadius: 12,
     paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 95,
     marginTop: 15,
-    marginBottom: 50,
+
     marginHorizontal: 5,
   },
 
-  viewBotoes: {
-    flexDirection: "row",
-  },
   text: {
     fontSize: 20,
     color: "#0C0D0F",
@@ -221,13 +223,8 @@ const estilos = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
-    marginVertical: 20,
+    marginTop: 10,
     borderColor: "#0C0D0F",
     borderWidth: 2,
-  },
-  containerInput: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

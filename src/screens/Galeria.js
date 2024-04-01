@@ -20,7 +20,7 @@ export default function Galeria() {
         });
         setArquivos(images);
       } catch (error) {
-        console.error("Error fetching images from Firestore:", error);
+        console.error("Erro no fetching do Firestore:", error);
       }
     };
 
@@ -50,14 +50,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   itemContainer: {
-    margin: 10,
+    marginHorizontal: 2,
+    marginVertical: 20,
   },
   imagem: {
     width: 200,
     height: 200,
+    borderRadius: 8,
   },
   descricao: {
     marginTop: 5,
     textAlign: "center",
+    fontWeight: "500",
   },
 });
