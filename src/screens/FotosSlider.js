@@ -52,6 +52,12 @@ export default function FotosSlider() {
           pagingEnabled
         />
       </View>
+      <Pressable
+        style={estilos.botaoFotoGhost}
+        onPress={() => navigation.navigate("Galeria")}
+      >
+        <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
+      </Pressable>
     </SafeContainer>
   );
 }
