@@ -26,7 +26,6 @@ export default function App() {
             name="Home"
             component={Home}
             options={{ headerShown: false }}
-            // Desabilita o nome na home
           />
           <Stack.Screen name="Galeria" component={Galeria} />
           <Stack.Screen name="FotosSlider" component={FotosSlider} />

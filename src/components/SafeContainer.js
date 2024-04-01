@@ -1,5 +1,5 @@
 // RNFS
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import * as SplashScreen from "expo-splash-screen";
@@ -10,14 +10,11 @@ import * as SplashScreen from "expo-splash-screen";
 
 export default function SafeContainer({ children }) {
   return (
-    <LinearGradient
-      colors={["#F3EEDD", "#FAF5E3", "#F3EEDD"]}
-      style={estilos.container}
-    >
+    <View style={estilos.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <SafeAreaView>{children}</SafeAreaView>
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -26,5 +23,7 @@ const estilos = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#F3EEDD",
+    paddingVertical: 30,
   },
 });
