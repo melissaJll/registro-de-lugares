@@ -25,7 +25,7 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={Home}
-            options={{ headerShown: false }}
+            // options={{ headerShown: false }}
           />
           <Stack.Screen name="Galeria" component={Galeria} />
           <Stack.Screen name="FotosSlider" component={FotosSlider} />
