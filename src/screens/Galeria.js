@@ -4,6 +4,7 @@ import { StyleSheet, View, Image, Text } from "react-native";
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
 import SafeContainer from "../components/SafeContainer";
 
+// Storage
 export default function Galeria() {
   const [arquivos, setArquivos] = useState([]);
 
