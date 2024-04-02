@@ -23,7 +23,6 @@ import { GeoPoint } from "firebase/firestore";
 import Mapa from "./Mapa";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 const db = getFirestore(app);
@@ -73,22 +72,10 @@ export default function TirarFoto() {
   }, []);
 
   // Mapa
-  const regiaoInicialMapa = {
-    latitude: -23.5489,
-    longitude: -46.6388,
-
-    latitudeDelta: 0.8,
-    longitudeDelta: 0.8,
-  };
   const marcarLocal = () => {
-    setLocalizacao({
-      latitude: minhaLocalizacao.coords.latitude,
-      longitude: minhaLocalizacao.coords.longitude,
-      latitudeDelta: 0.02,
-      longitudeDelta: 0.01,
-    });
     setlatitudeStore(minhaLocalizacao.coords.latitude);
     setlongitudeStore(minhaLocalizacao.coords.longitude);
+    Alert.alert("Localização adicionada!");
   };
 
   // Camera
@@ -166,21 +153,8 @@ export default function TirarFoto() {
 
   return (
     <View style={estilos.containerFoto}>
-      <MapView
-        style={estilos.map}
-        mapType="mutedStandard"
-        region={localizacao ?? regiaoInicialMapa}
-      >
-        <Marker coordinate={localizacao}>
-          <Image
-            source={require("../../assets/marker.png")}
-            height={3}
-            width={2}
-          />
-        </Marker>
-      </MapView>
-      <Pressable onPress={marcarLocal} style={estilos.botaoMapa}>
-        <Text style={estilos.botaoText}>Localizar no Mapa</Text>
+      <Pressable onPress={marcarLocal} style={estilos.botaoFotoGhost}>
+        <Text style={estilos.botaoTextGhost}>Adicionar localização Mapa</Text>
       </Pressable>
       {descricao && <Text style={estilos.text}> {descricao}</Text>}
 
@@ -265,7 +239,7 @@ const estilos = StyleSheet.create({
     backgroundColor: "#F46A2E",
     borderRadius: 12,
     paddingVertical: 15,
-    paddingHorizontal: 115,
+    paddingHorizontal: 117,
     marginTop: 15,
 
     marginHorizontal: 5,
@@ -287,19 +261,7 @@ const estilos = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 4,
   },
-  botaoText: {
-    color: "#0C0D0F",
-    fontWeight: "600",
-    fontSize: 18,
-  },
-  botaoMapa: {
-    borderWidth: 1,
-    borderRadius: 12,
-    borderColor: "#000",
-    padding: 15,
-    borderStyle: "solid",
-    marginTop: 20,
-  },
+
   map: {
     width: 340,
     height: 250,
