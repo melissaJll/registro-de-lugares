@@ -19,7 +19,11 @@ export default function Galeria() {
         const images = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          images.push({ foto: data.foto, descricao: data.descricao });
+          images.push({
+            foto: data.foto,
+            descricao: data.descricao,
+            endereco: data.endereco || "",
+          });
         });
         setArquivos(images);
         setLoading(false);
@@ -41,8 +45,9 @@ export default function Galeria() {
         <View style={estilos.container}>
           {arquivos.map((item, index) => (
             <View key={index} style={estilos.itemContainer}>
-              <Text style={estilos.descricao}>{item.descricao}</Text>
               <Image source={{ uri: item.foto }} style={estilos.imagem} />
+              <Text style={estilos.descricao}>{item.descricao}</Text>
+              <Text style={estilos.endereco}>Endereço: {item.endereco}</Text>
             </View>
           ))}
         </View>
@@ -62,10 +67,12 @@ const estilos = StyleSheet.create({
   itemContainer: {
     marginHorizontal: 3,
     marginVertical: 20,
+    backgroundColor: "#fff",
+    borderRadius: 8,
   },
   imagem: {
-    width: 200,
-    height: 250,
+    width: 350,
+    height: 380,
     borderRadius: 8,
   },
   descricao: {
@@ -73,8 +80,12 @@ const estilos = StyleSheet.create({
     marginLeft: 5,
     fontWeight: "500",
     fontSize: 16,
+    padding: 8,
   },
   loadingContainer: {
     padding: 30,
+  },
+  endereco: {
+    padding: 11,
   },
 });
