@@ -22,10 +22,27 @@ export default function Home() {
   return (
     <SafeContainer>
       <View style={estilos.containerFoto}>
+        <Text style={estilos.tituloPrincipal}>Guarde suas lembranças</Text>
+        <Text style={estilos.textoSecundario}>
+          Tire uma foto, adicione a localização e uma bela descrição
+        </Text>
         <TirarFoto />
       </View>
     </SafeContainer>
   );
 }
 
-const estilos = StyleSheet.create({});
+const estilos = StyleSheet.create({
+  containerFoto: {
+    flex: 1,
+  },
+  tituloPrincipal: {
+    fontSize: 33,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  textoSecundario: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+});
