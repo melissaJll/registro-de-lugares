@@ -18,9 +18,6 @@ import firebaseConfig from "../../firebase.config";
 
 import app from "../../firebase.config"; // Assuming firebase.config.js is in the same directory
 
-const db = getFirestore(app);
-console.log("DB is", db);
-
 export default function Home() {
   return (
     <SafeContainer>
