@@ -71,7 +71,7 @@ export default function FotosSlider() {
         style={estilos.botaoIrGaleria}
         onPress={() => navigation.navigate("Galeria")}
       >
-        <Text style={estilos.textoBotaoGaleria}>Ver todas as fotos</Text>
+        <Text style={estilos.textoBotaoGaleria}>Ver detalhes</Text>
         <AntDesign name="arrowright" size={24} color="black" />
       </Pressable>
     </SafeContainer>

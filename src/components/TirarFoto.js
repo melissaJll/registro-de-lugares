@@ -51,26 +51,47 @@ export default function TirarFoto() {
   const coordenadas = new GeoPoint(latitudeStore, longitudeStore);
 
   useEffect(() => {
+    // Permissão camera
     async function verificaPermissoes() {
       const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
       requestPermission(cameraStatus === "granted");
     }
 
     verificaPermissoes();
+
+    // obter permissão da minha localização
+    async function obterLocalizacao() {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Ops", "Você não autorizou o uso da geolocalizacao");
+        return;
+      }
+      let localizacaoAtual = await Location.getCurrentPositionAsync({});
+      setminhaLocalizacao(localizacaoAtual);
+    }
+    obterLocalizacao();
   }, []);
 
-  const escolherFoto = async () => {
-    const resultado = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [16, 9],
-      quality: 1,
+  // Mapa
+  const regiaoInicialMapa = {
+    latitude: -23.5489,
+    longitude: -46.6388,
+
+    latitudeDelta: 0.8,
+    longitudeDelta: 0.8,
+  };
+  const marcarLocal = () => {
+    setLocalizacao({
+      latitude: minhaLocalizacao.coords.latitude,
+      longitude: minhaLocalizacao.coords.longitude,
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.01,
     });
-    if (!resultado.canceled) {
-      setFoto(resultado.assets[0].uri);
-    }
+    setlatitudeStore(minhaLocalizacao.coords.latitude);
+    setlongitudeStore(minhaLocalizacao.coords.longitude);
   };
 
+  // Camera
   const acessarCamera = async () => {
     const imagem = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
@@ -83,9 +104,9 @@ export default function TirarFoto() {
       setFoto(imagem.assets[0].uri);
     }
   };
-
+  //  upload para storage e firebase
   const uploadStorage = async () => {
-    setUploading(true); //  upload está em andamento
+    setUploading(true);
 
     try {
       if (!descricao || !foto) {
@@ -101,7 +122,7 @@ export default function TirarFoto() {
 
       // Verifica se a requisição da imagem foi bem-sucedida
       if (!response.ok) {
-        throw new Error("Falha ao obter a imagem"); // Se não for, lança um erro
+        throw new Error("Falha ao obter a imagem");
       }
 
       // Converte a imagem para um blob ( array de bytes )
@@ -126,8 +147,7 @@ export default function TirarFoto() {
       console.log("Download URL:", downloadURL);
 
       setUploading(false);
-      Alert.alert("Upload concluído"); // Exibe um alerta indicando que o upload foi concluído com sucesso
-      // Limpa o estado da imagem selecionada
+      Alert.alert("Upload concluído", "Veja suas na galeria"); // Exibe um alerta indicando que o upload foi concluído com sucesso
       setFoto(null);
       setDescricao(null);
     } catch (error) {
@@ -137,42 +157,6 @@ export default function TirarFoto() {
     }
   };
 
-  // Mapa
-
-  const regiaoInicialMapa = {
-    latitude: -23.5489,
-    longitude: -46.6388,
-
-    latitudeDelta: 0.8,
-    longitudeDelta: 0.8,
-  };
-
-  // Ação de marcar o local/tocar em um ponto do mapa e dar valor a localização através do state
-  const marcarLocal = () => {
-    // console.log(event.nativeEvent);
-    setLocalizacao({
-      latitude: minhaLocalizacao.coords.latitude,
-      longitude: minhaLocalizacao.coords.longitude,
-      latitudeDelta: 0.02,
-      longitudeDelta: 0.01,
-    });
-    setlatitudeStore(minhaLocalizacao.coords.latitude);
-    setlongitudeStore(minhaLocalizacao.coords.longitude);
-  };
-
-  // obter permissão da minha localização
-  useEffect(() => {
-    async function obterLocalizacao() {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Ops", "Você não autorizou o uso da geolocalizacao");
-        return;
-      }
-      let localizacaoAtual = await Location.getCurrentPositionAsync({});
-      setminhaLocalizacao(localizacaoAtual);
-    }
-    obterLocalizacao();
-  }, []);
   console.log(minhaLocalizacao); //Esperar carregar no console para testar
 
   return (
@@ -300,7 +284,7 @@ const estilos = StyleSheet.create({
   botaoMapa: {
     borderWidth: 1,
     borderRadius: 12,
-    borderColor: "#fff",
+    borderColor: "#000",
     padding: 15,
     borderStyle: "solid",
     marginTop: 20,
