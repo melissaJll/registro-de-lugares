@@ -40,9 +40,11 @@ const estilos = StyleSheet.create({
     fontSize: 33,
     fontWeight: "bold",
     marginBottom: 10,
+    padding: 6,
   },
   textoSecundario: {
     fontSize: 16,
     marginBottom: 20,
+    padding: 6,
   },
 });

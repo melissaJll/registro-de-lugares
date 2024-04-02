@@ -23,6 +23,7 @@ import { GeoPoint } from "firebase/firestore";
 import Mapa from "./Mapa";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 
 const db = getFirestore(app);
@@ -139,7 +140,7 @@ export default function TirarFoto() {
       console.log("Download URL:", downloadURL);
 
       setUploading(false);
-      Alert.alert("Upload concluído", "Veja suas na galeria"); // Exibe um alerta indicando que o upload foi concluído com sucesso
+      Alert.alert("Upload concluído", "Veja suas fotos na galeria"); // Exibe um alerta indicando que o upload foi concluído com sucesso
       setFoto(null);
       setDescricao(null);
     } catch (error) {
@@ -153,11 +154,7 @@ export default function TirarFoto() {
 
   return (
     <View style={estilos.containerFoto}>
-      <Pressable onPress={marcarLocal} style={estilos.botaoFotoGhost}>
-        <Text style={estilos.botaoTextGhost}>Adicionar localização Mapa</Text>
-      </Pressable>
       {descricao && <Text style={estilos.text}> {descricao}</Text>}
-
       {foto && (
         <>
           <Image
@@ -174,6 +171,25 @@ export default function TirarFoto() {
           </View>
         </>
       )}
+
+      <View style={estilos.viewBotoes}>
+        <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
+          <MaterialIcons name="add-to-photos" size={24} color="black" />
+          <Text style={estilos.botaoTextGhost}>Nova foto</Text>
+        </Pressable>
+        <Pressable onPress={marcarLocal} style={estilos.botaoFotoGhost}>
+          <Ionicons name="compass" size={24} color="black" />
+          <Text style={estilos.botaoTextGhost}>Guardar localização</Text>
+        </Pressable>
+      </View>
+
+      <Pressable
+        style={estilos.botaoFotoGhost}
+        onPress={() => navigation.navigate("FotosSlider")}
+      >
+        <FontAwesome name="picture-o" size={24} color="black" />
+        <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
+      </Pressable>
       {descricao && (
         <Pressable
           style={({ pressed }) => [
@@ -185,20 +201,6 @@ export default function TirarFoto() {
           <Text style={estilos.botaoFirestoreText}>Salvar Lugar</Text>
         </Pressable>
       )}
-
-      <View style={estilos.viewBotoes}>
-        <Pressable onPress={acessarCamera} style={estilos.botaoFotoGhost}>
-          <MaterialIcons name="add-to-photos" size={24} color="black" />
-          <Text style={estilos.botaoTextGhost}>Tirar nova foto</Text>
-        </Pressable>
-        <Pressable
-          style={estilos.botaoFotoGhost}
-          onPress={() => navigation.navigate("FotosSlider")}
-        >
-          <FontAwesome name="picture-o" size={24} color="black" />
-          <Text style={estilos.botaoTextGhost}>Ver fotos</Text>
-        </Pressable>
-      </View>
     </View>
   );
 }
@@ -209,23 +211,24 @@ const estilos = StyleSheet.create({
   },
   viewBotoes: {
     flexDirection: "row",
-    marginBottom: 50,
+    marginBottom: 3,
   },
 
   botaoTextGhost: {
     color: "#0C0D0F",
     fontWeight: "600",
-    fontSize: 18,
-    marginLeft: 4,
+    fontSize: 17,
+    marginLeft: 2,
   },
   botaoFotoGhost: {
     borderWidth: 1,
     borderRadius: 12,
     borderColor: "#0C0D0F",
     padding: 15,
+    paddingHorizontal: 15,
     borderStyle: "solid",
     marginTop: 15,
-    marginBottom: 20,
+    marginBottom: 8,
     marginHorizontal: 5,
     flexDirection: "row",
   },

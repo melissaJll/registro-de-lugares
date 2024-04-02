@@ -86,8 +86,8 @@ const estilos = StyleSheet.create({
   },
   item: {
     // Aumenta a largura e do item para exibir imagens maiores
-    width: 330,
-    height: 650,
+    width: 335,
+    height: 635,
     marginHorizontal: 12,
     borderRadius: 16,
     overflow: "hidden", // Esconde qualquer conteúdo que ultrapasse os limites do item
