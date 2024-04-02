@@ -137,12 +137,17 @@ export default function TirarFoto() {
       // Obtém o URL de download da imagem
       const downloadURL = await getDownloadURL(storageRef);
 
+      const addressResponse = await Location.reverseGeocodeAsync({
+        latitude: minhaLocalizacao.coords.latitude,
+        longitude: minhaLocalizacao.coords.longitude,
+      });
       // Salva o URL de download da imagem e a descrição no Firestore
       const placesCollectionRef = collection(db, "lugares"); // Obtém a referência para a coleção "lugares" no Firestore
       await addDoc(placesCollectionRef, {
         foto: downloadURL, // Adiciona o URL de download da imagem ao documento
         descricao: descricao, // Adiciona a descrição ao documento (capturada do estado "descricao")
         coordenadas: coordenadas,
+        endereco: addressResponse[0].street,
       });
       console.log("Download URL:", downloadURL);
 
@@ -196,7 +201,13 @@ export default function TirarFoto() {
         </>
       )}
       {descricao && (
-        <Pressable style={estilos.botaoFirestore} onPress={uploadStorage}>
+        <Pressable
+          style={({ pressed }) => [
+            estilos.botaoFirestore,
+            { backgroundColor: pressed ? "#Fd66c3e" : "#F46A2E" }, //
+          ]}
+          onPress={uploadStorage}
+        >
           <Text style={estilos.botaoFirestoreText}>Salvar Lugar</Text>
         </Pressable>
       )}
